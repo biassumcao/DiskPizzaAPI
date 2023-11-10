@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { ItemController } from './Item/item.controller';
+import { ItemModule } from '../Item/item.module';
+import { Pizza } from 'src/Item/pizza.entity';
 
 @Module({
   imports: [
@@ -18,10 +17,11 @@ import { ItemController } from './Item/item.controller';
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         synchronize: true,
+        entities: [Pizza],
       }),
     }),
+
+    ItemModule,
   ],
-  controllers: [AppController, ItemController],
-  providers: [AppService],
 })
 export class AppModule {}
