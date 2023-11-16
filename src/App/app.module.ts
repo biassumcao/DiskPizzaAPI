@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ItemModule } from '../Item/item.module';
-import { Pizza } from 'src/Item/pizza.entity';
+import { Pizza } from 'src/Item/Entity/pizza.entity';
+import { Ingredient } from 'src/Item/Entity/ingredient.entity';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { Pizza } from 'src/Item/pizza.entity';
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         synchronize: true,
-        entities: [Pizza],
+        entities: [Pizza, Ingredient],
+        database: process.env.DB_DATABASE,
       }),
     }),
 

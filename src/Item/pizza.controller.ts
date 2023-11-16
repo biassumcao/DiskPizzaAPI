@@ -1,13 +1,15 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   NotImplementedException,
+  Param,
   Patch,
   Post,
 } from '@nestjs/common';
 import { PizzaDto } from './Dto/pizza.dto';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PizzaService } from './pizza.service';
 
 @ApiTags('Pizza')
@@ -23,9 +25,9 @@ export class PizzaController {
     description: 'Success operation',
     type: PizzaDto,
   })
-  @Get()
-  async getPizza(): Promise<PizzaDto> {
-    return await this.pizzaService.getPizza({ id: 0 });
+  @Get(':id')
+  async getPizza(@Param() id): Promise<PizzaDto> {
+    return await this.pizzaService.getPizza({ id: id });
   }
 
   @ApiOperation({
@@ -36,9 +38,10 @@ export class PizzaController {
     description: 'Success operation',
     type: PizzaDto,
   })
+  @ApiBody({ type: PizzaDto })
   @Post()
-  async addPizza(): Promise<PizzaDto> {
-    throw new NotImplementedException();
+  async addPizza(@Body() pizzaDto: PizzaDto): Promise<PizzaDto> {
+    return await this.pizzaService.addPizza(pizzaDto);
   }
 
   @ApiOperation({
