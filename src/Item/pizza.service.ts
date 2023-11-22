@@ -23,6 +23,7 @@ export class PizzaService {
     const pizzaDto = new PizzaDto();
     pizzaDto.flavor = pizza.Flavor;
     pizzaDto.price = pizza.Price;
+    pizzaDto.ingredients = [];
 
     pizza.Ingredients.forEach((ingredient) => {
       pizzaDto.ingredients.push(ingredient.Name);
@@ -38,12 +39,11 @@ export class PizzaService {
 
     const ingredients: Ingredient[] = [];
 
-    pizzaDto.ingredients.forEach(async (ingredientName: string) => {
+    for (const ingredientName of pizzaDto.ingredients) {
       const ingredient = new Ingredient(ingredientName);
-      await this.ingredientRepository.save(ingredient);
-
-      ingredients.push(ingredient);
-    });
+      const savedIngredient = await this.ingredientRepository.save(ingredient);
+      ingredients.push(savedIngredient);
+    }
 
     pizza.Ingredients = ingredients;
 

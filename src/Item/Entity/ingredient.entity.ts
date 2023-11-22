@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'ingredient', schema: 'public' })
+@Entity()
 export class Ingredient {
   constructor(name: string) {
     this.Name = name;

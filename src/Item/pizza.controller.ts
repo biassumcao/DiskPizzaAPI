@@ -3,18 +3,26 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   NotImplementedException,
   Param,
   Patch,
   Post,
 } from '@nestjs/common';
 import { PizzaDto } from './Dto/pizza.dto';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { PizzaService } from './pizza.service';
 
 @ApiTags('Pizza')
 @Controller('pizza')
 export class PizzaController {
+  private readonly logger = new Logger(PizzaController.name);
   constructor(private readonly pizzaService: PizzaService) {}
 
   @ApiOperation({
@@ -25,9 +33,10 @@ export class PizzaController {
     description: 'Success operation',
     type: PizzaDto,
   })
+  @ApiParam({ name: 'id', type: 'number' })
   @Get(':id')
-  async getPizza(@Param() id): Promise<PizzaDto> {
-    return await this.pizzaService.getPizza({ id: id });
+  async getPizza(@Param() { id }) {
+    return await this.pizzaService.getPizza({ id });
   }
 
   @ApiOperation({
