@@ -25,6 +25,10 @@ export class PizzaService {
       where: { Id: getPizzaDto.id },
       relations: { Ingredients: true },
     });
+
+    if (!pizza) {
+      throw new Error(`Not found pizza with id ${getPizzaDto.id}`);
+    }
     const pizzaDto = new PizzaDto();
     pizzaDto.flavor = pizza.Flavor;
     pizzaDto.price = pizza.Price;
@@ -62,21 +66,29 @@ export class PizzaService {
   }
 
   async updatePizza(updatePizzaDto: UpdatePizzaDto): Promise<string> {
-    await this.pizzaRepository.update(updatePizzaDto.id, {
+    const updateResult = await this.pizzaRepository.update(updatePizzaDto.id, {
       Id: updatePizzaDto.id,
       Flavor: updatePizzaDto.flavor,
       Price: updatePizzaDto.price,
     });
 
+    if (updateResult.affected == 0) {
+      throw new Error(`Not found pizza with id ${updatePizzaDto.id} to update`);
+    }
+
     return `Pizza ${updatePizzaDto.id} updated succesfully`;
   }
 
-  async deletePizza(deletePizzaDto: DeletePizzaDto): Promise<void> {
+  async deletePizza(deletePizzaDto: DeletePizzaDto): Promise<string> {
     const pizza = await this.pizzaRepository.findOne({
       where: { Id: deletePizzaDto.id },
     });
+    if (!pizza) {
+      throw new Error(`Not found pizza with id ${deletePizzaDto.id} to delete`);
+    }
 
     await this.pizzaRepository.remove(pizza);
+    return `Pizza ${deletePizzaDto.id} deleted successfully`;
   }
 
   private formatError(errorMessage: string) {

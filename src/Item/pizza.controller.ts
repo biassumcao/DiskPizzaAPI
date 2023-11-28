@@ -37,7 +37,11 @@ export class PizzaController {
   @ApiParam({ name: 'id', type: 'number' })
   @Get(':id')
   async getPizza(@Param() { id }) {
-    return await this.pizzaService.getPizza({ id });
+    try {
+      return await this.pizzaService.getPizza({ id });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @ApiOperation({
@@ -82,7 +86,11 @@ export class PizzaController {
   })
   @ApiParam({ name: 'id', type: 'number' })
   @Delete(':id')
-  async deletePizza(@Param() { id }): Promise<void> {
-    this.pizzaService.deletePizza({ id });
+  async deletePizza(@Param() { id }): Promise<string> {
+    try {
+      return await this.pizzaService.deletePizza({ id });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 }
