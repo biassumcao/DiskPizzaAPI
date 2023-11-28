@@ -12,7 +12,7 @@ export class Pizza {
   @PrimaryGeneratedColumn()
   Id: number;
 
-  @Column()
+  @Column({ unique: true })
   Flavor: string;
 
   @Column({ type: 'double' })

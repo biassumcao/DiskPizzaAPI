@@ -1,10 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Logger,
-  NotImplementedException,
   Param,
   Patch,
   Post,
@@ -18,6 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { PizzaService } from './pizza.service';
+import { UpdatePizzaDto } from './Dto/update-pizza.dto';
 
 @ApiTags('Pizza')
 @Controller('pizza')
@@ -50,7 +51,11 @@ export class PizzaController {
   @ApiBody({ type: PizzaDto })
   @Post()
   async addPizza(@Body() pizzaDto: PizzaDto): Promise<PizzaDto> {
-    return await this.pizzaService.addPizza(pizzaDto);
+    try {
+      return await this.pizzaService.addPizza(pizzaDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @ApiOperation({
@@ -61,17 +66,23 @@ export class PizzaController {
     description: 'Success operation',
     type: PizzaDto,
   })
+  @ApiBody({ type: UpdatePizzaDto })
   @Patch()
-  async updatePizza(): Promise<PizzaDto> {
-    throw new NotImplementedException();
+  async updatePizza(@Body() updatePizzaDto: UpdatePizzaDto): Promise<string> {
+    try {
+      return await this.pizzaService.updatePizza(updatePizzaDto);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   @ApiOperation({
     summary: 'Remove a pizza flavor',
     description: 'Remove a pizza flavor',
   })
-  @Delete()
-  async deletePizza(): Promise<void> {
-    throw new NotImplementedException();
+  @ApiParam({ name: 'id', type: 'number' })
+  @Delete(':id')
+  async deletePizza(@Param() { id }): Promise<void> {
+    this.pizzaService.deletePizza({ id });
   }
 }
