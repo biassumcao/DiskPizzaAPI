@@ -22,20 +22,20 @@ export class PizzaService {
 
   async getPizza(getPizzaDto: GetPizzaDto) {
     const pizza = await this.pizzaRepository.findOne({
-      where: { Id: getPizzaDto.id },
-      relations: { Ingredients: true },
+      where: { id: getPizzaDto.id },
+      relations: { ingredients: true },
     });
 
     if (!pizza) {
       throw new Error(`Not found pizza with id ${getPizzaDto.id}`);
     }
     const pizzaDto = new PizzaDto();
-    pizzaDto.flavor = pizza.Flavor;
-    pizzaDto.price = pizza.Price;
+    pizzaDto.flavor = pizza.flavor;
+    pizzaDto.price = pizza.price;
     pizzaDto.ingredients = [];
 
-    pizza.Ingredients.forEach((ingredient) => {
-      pizzaDto.ingredients.push(ingredient.Name);
+    pizza.ingredients.forEach((ingredient) => {
+      pizzaDto.ingredients.push(ingredient.name);
     });
 
     return pizzaDto;
@@ -44,8 +44,8 @@ export class PizzaService {
   async addPizza(pizzaDto: PizzaDto) {
     try {
       const pizza = new Pizza();
-      pizza.Flavor = pizzaDto.flavor;
-      pizza.Price = pizzaDto.price;
+      pizza.flavor = pizzaDto.flavor;
+      pizza.price = pizzaDto.price;
 
       const ingredients: Ingredient[] = [];
 
@@ -56,7 +56,7 @@ export class PizzaService {
         ingredients.push(savedIngredient);
       }
 
-      pizza.Ingredients = ingredients;
+      pizza.ingredients = ingredients;
 
       await this.pizzaRepository.save(pizza);
       return pizzaDto;
@@ -67,9 +67,9 @@ export class PizzaService {
 
   async updatePizza(updatePizzaDto: UpdatePizzaDto): Promise<string> {
     const updateResult = await this.pizzaRepository.update(updatePizzaDto.id, {
-      Id: updatePizzaDto.id,
-      Flavor: updatePizzaDto.flavor,
-      Price: updatePizzaDto.price,
+      id: updatePizzaDto.id,
+      flavor: updatePizzaDto.flavor,
+      price: updatePizzaDto.price,
     });
 
     if (updateResult.affected == 0) {
@@ -81,7 +81,7 @@ export class PizzaService {
 
   async deletePizza(deletePizzaDto: DeletePizzaDto): Promise<string> {
     const pizza = await this.pizzaRepository.findOne({
-      where: { Id: deletePizzaDto.id },
+      where: { id: deletePizzaDto.id },
     });
     if (!pizza) {
       throw new Error(`Not found pizza with id ${deletePizzaDto.id} to delete`);

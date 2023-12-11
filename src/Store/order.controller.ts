@@ -1,18 +1,32 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post } from '@nestjs/common';
 import { MakeOrderDto } from './Dto/make-order.dto';
 import { GetOrderDto } from './Dto/get-order.dto';
+import { OrderService } from './order.service';
+import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@Controller()
+@ApiTags('Order')
+@Controller('order')
 export class OrderController {
   private readonly logger = new Logger(OrderController.name);
+  constructor(private readonly orderService: OrderService) {}
 
+  @ApiOperation({
+    summary: 'Make an order',
+    description: 'Make an order',
+  })
+  @ApiOkResponse({
+    description: 'Success operation',
+    type: 'string',
+  })
+  @ApiBody({ type: MakeOrderDto })
   @Post()
-  makeOrder(@Body() makeOrderDto: MakeOrderDto) {
-    return makeOrderDto;
+  async makeOrder(@Body() makeOrderDto: MakeOrderDto) {
+    await this.orderService.makeOrder(makeOrderDto);
+    return 'ok';
   }
 
-  @Post()
-  getOrder(getOrderDto: GetOrderDto) {
-    return getOrderDto;
+  @Get()
+  async getOrder(getOrderDto: GetOrderDto) {
+    return await this.orderService.getOrder(getOrderDto);
   }
 }

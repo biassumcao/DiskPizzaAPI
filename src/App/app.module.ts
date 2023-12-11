@@ -4,6 +4,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ItemModule } from '../Item/item.module';
 import { Pizza } from 'src/Item/Entity/pizza.entity';
 import { Ingredient } from 'src/Item/Entity/ingredient.entity';
+import { StoreModule } from 'src/Store/store.module';
+import { Order } from 'src/Store/Entity/order.entity';
 
 @Module({
   imports: [
@@ -18,12 +20,13 @@ import { Ingredient } from 'src/Item/Entity/ingredient.entity';
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         synchronize: true,
-        entities: [Pizza, Ingredient],
+        entities: [Pizza, Ingredient, Order],
         database: process.env.DB_DATABASE,
       }),
     }),
 
     ItemModule,
+    StoreModule,
   ],
 })
 export class AppModule {}

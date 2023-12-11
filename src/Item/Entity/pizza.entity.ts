@@ -10,21 +10,21 @@ import { Ingredient } from './ingredient.entity';
 @Entity()
 export class Pizza {
   @PrimaryGeneratedColumn()
-  Id: number;
+  id: number;
 
   @Column({ unique: true })
-  Flavor: string;
+  flavor: string;
 
   @Column({ type: 'double' })
-  Price: number;
+  price: number;
 
   @ManyToMany(() => Ingredient, {
     cascade: true,
   })
   @JoinTable({
     name: 'pizzaingredients',
-    joinColumn: { name: 'pizzaId', referencedColumnName: 'Id' },
-    inverseJoinColumn: { name: 'ingredientId', referencedColumnName: 'Id' },
+    joinColumn: { name: 'pizzaId', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'ingredientId', referencedColumnName: 'id' },
   })
-  Ingredients: Ingredient[];
+  ingredients: Ingredient[];
 }

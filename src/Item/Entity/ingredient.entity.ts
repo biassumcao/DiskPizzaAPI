@@ -3,12 +3,12 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Ingredient {
   constructor(name: string) {
-    this.Name = name;
+    this.name = name;
   }
 
   @PrimaryGeneratedColumn()
-  Id: number;
+  id: number;
 
   @Column()
-  Name: string;
+  name: string;
 }
