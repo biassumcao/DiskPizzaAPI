@@ -1,10 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Logger } from '@nestjs/common';
 import { MenuService } from './menu.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Menu')
 @Controller('menu')
 export class MenuController {
+  private readonly logger = new Logger(MenuController.name);
   constructor(private readonly menuService: MenuService) {}
 
   @ApiOperation({
