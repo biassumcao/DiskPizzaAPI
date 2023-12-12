@@ -31,7 +31,7 @@ export class OrderController {
   }
 
   @ApiParam({ name: 'id', type: 'number' })
-  @Get()
+  @Get(':id')
   async getOrder(@Param() { id }) {
     return await this.orderService.getOrder({ id });
   }
