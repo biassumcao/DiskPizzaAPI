@@ -1,19 +1,13 @@
-// import { Entity, Column } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-// @Entity('order-pizzas')
-// export class OrderPizzas {
-//   constructor(pizzaId: number, orderId: number, amount: number) {
-//     this.pizzaId = pizzaId;
-//     this.orderId = orderId;
-//     this.amount = amount;
-//   }
+@Entity('orderpizzas')
+export class OrderPizzas {
+  @PrimaryColumn()
+  pizzaId: number;
 
-//   @Column()
-//   pizzaId: number;
+  @PrimaryColumn()
+  orderId: number;
 
-//   @Column()
-//   orderId: number;
-
-//   @Column()
-//   amount: number;
-// }
+  @Column({ default: 0 })
+  amount: number = 0;
+}

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { GetOrderDto } from './Dto/get-order.dto';
 import { MakeOrderDto } from './Dto/make-order.dto';
 import { Pizza } from 'src/Item/Entity/pizza.entity';
+import { OrderPizzas } from './Entity/order-pizzas.entity';
 
 @Injectable()
 export class OrderService {
@@ -15,6 +16,8 @@ export class OrderService {
     private readonly orderRepository: Repository<Order>,
     @InjectRepository(Pizza)
     private readonly pizzaRepository: Repository<Pizza>,
+    @InjectRepository(OrderPizzas)
+    private readonly orderPizzasRepository: Repository<OrderPizzas>,
   ) {}
 
   async makeOrder(makeOrderDto: MakeOrderDto) {
@@ -30,7 +33,19 @@ export class OrderService {
 
     order.pizzas = pizzas;
 
-    return await this.orderRepository.save(order);
+    const savedOrder = await this.orderRepository.save(order);
+
+    const orderPizzas = await this.orderPizzasRepository.find({
+      where: { orderId: savedOrder.id },
+    });
+
+    for (let i = 0; i < orderPizzas.length; i++) {
+      orderPizzas[i].amount = makeOrderDto.pizzasAmount[i];
+    }
+
+    await this.orderPizzasRepository.save(orderPizzas);
+
+    return savedOrder;
   }
 
   async getOrder(getOrderDto: GetOrderDto) {
