@@ -20,6 +20,7 @@ export class MenuService {
 
     pizzas.forEach((item) => {
       menu.push({
+        Id: item.id,
         Pizza: item.flavor,
         Preço: item.price,
         Ingredientes: item.ingredients.map((ing) => ing.name),
@@ -31,6 +32,7 @@ export class MenuService {
 }
 
 export interface MenuItem {
+  Id: number;
   Pizza: string;
   Preço: number;
   Ingredientes: string[];
