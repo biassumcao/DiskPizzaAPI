@@ -7,6 +7,7 @@ import { Ingredient } from 'src/Item/Entity/ingredient.entity';
 import { StoreModule } from 'src/Store/store.module';
 import { Order } from 'src/Store/Entity/order.entity';
 import { OrderPizzas } from 'src/Store/Entity/order-pizzas.entity';
+import { User } from 'src/User/Entity/user.entity';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { OrderPizzas } from 'src/Store/Entity/order-pizzas.entity';
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         synchronize: true,
-        entities: [Pizza, Ingredient, Order, OrderPizzas],
+        entities: [Pizza, Ingredient, Order, OrderPizzas, User],
         database: process.env.DB_DATABASE,
       }),
     }),
