@@ -8,6 +8,7 @@ import { StoreModule } from 'src/Store/store.module';
 import { Order } from 'src/Store/Entity/order.entity';
 import { OrderPizzas } from 'src/Store/Entity/order-pizzas.entity';
 import { User } from 'src/User/Entity/user.entity';
+import { UserModule } from 'src/User/user.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { User } from 'src/User/Entity/user.entity';
 
     ItemModule,
     StoreModule,
+    UserModule,
   ],
 })
 export class AppModule {}
