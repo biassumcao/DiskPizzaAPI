@@ -9,6 +9,7 @@ import { Order } from 'src/Store/Entity/order.entity';
 import { OrderPizzas } from 'src/Store/Entity/order-pizzas.entity';
 import { User } from 'src/User/Entity/user.entity';
 import { UserModule } from 'src/User/user.module';
+import { AuthModule } from 'src/Auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UserModule } from 'src/User/user.module';
     ItemModule,
     StoreModule,
     UserModule,
+    AuthModule
   ],
 })
 export class AppModule {}
