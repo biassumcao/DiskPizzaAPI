@@ -1,5 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './Dto/create-user.dto';
 
@@ -19,6 +25,12 @@ export class UserController {
   @Post('signup')
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userService.create(createUserDto);
+  }
+
+  @ApiParam({ name: 'email', type: 'string' })
+  @Get(':email')
+  async getUserByEmail(@Param('email') email: string) {
+    return await this.userService.findByEmail(email);
   }
 
   @Post('login')
