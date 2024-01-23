@@ -10,6 +10,10 @@ import { OrderPizzas } from 'src/Store/Entity/order-pizzas.entity';
 import { User } from 'src/User/Entity/user.entity';
 import { UserModule } from 'src/User/user.module';
 import { AuthModule } from 'src/Auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from 'src/Auth/Guards/jwt-auth.guard';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -32,7 +36,15 @@ import { AuthModule } from 'src/Auth/auth.module';
     ItemModule,
     StoreModule,
     UserModule,
-    AuthModule
+    AuthModule,
+  ],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
   ],
 })
 export class AppModule {}

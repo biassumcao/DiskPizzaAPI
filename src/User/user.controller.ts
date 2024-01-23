@@ -8,12 +8,14 @@ import {
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './Dto/create-user.dto';
+import { IsPublic } from 'src/Auth/decorators/is-public.decorator';
 
 @ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @IsPublic()
   @ApiOperation({
     summary: 'Creates a new User',
     description: 'Creates a new User',
