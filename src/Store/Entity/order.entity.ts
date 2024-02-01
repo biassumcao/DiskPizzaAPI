@@ -36,4 +36,7 @@ export class Order {
     inverseJoinColumn: { name: 'pizzaId', referencedColumnName: 'id' },
   })
   pizzas: Pizza[];
+
+  @Column()
+  userId: number;
 }
