@@ -38,6 +38,7 @@ export class PizzaController {
   @Get(':id')
   async getPizza(@Param() { id }) {
     try {
+      this.logger.debug(id);
       return await this.pizzaService.getPizza({ id });
     } catch (error) {
       throw new BadRequestException(error.message);
@@ -56,6 +57,7 @@ export class PizzaController {
   @Post()
   async addPizza(@Body() pizzaDto: PizzaDto): Promise<PizzaDto> {
     try {
+      this.logger.debug(pizzaDto);
       return await this.pizzaService.addPizza(pizzaDto);
     } catch (error) {
       throw new BadRequestException(error.message);
@@ -74,6 +76,7 @@ export class PizzaController {
   @Patch()
   async updatePizza(@Body() updatePizzaDto: UpdatePizzaDto): Promise<string> {
     try {
+      this.logger.debug(updatePizzaDto);
       return await this.pizzaService.updatePizza(updatePizzaDto);
     } catch (error) {
       throw new BadRequestException(error.message);
@@ -88,6 +91,7 @@ export class PizzaController {
   @Delete(':id')
   async deletePizza(@Param() { id }): Promise<string> {
     try {
+      this.logger.debug(id);
       return await this.pizzaService.deletePizza({ id });
     } catch (error) {
       throw new BadRequestException(error.message);
