@@ -8,6 +8,8 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
+import { CurrentUser } from 'src/Auth/Decorators/current-user.decorator';
+import { User } from 'src/User/Entity/user.entity';
 
 @ApiTags('Order')
 @Controller('order')
@@ -25,8 +27,12 @@ export class OrderController {
   })
   @ApiBody({ type: MakeOrderDto })
   @Post()
-  async makeOrder(@Body() makeOrderDto: MakeOrderDto) {
-    await this.orderService.makeOrder(makeOrderDto);
+  async makeOrder(
+    @Body() makeOrderDto: MakeOrderDto,
+    @CurrentUser() user: User,
+  ) {
+    console.log(makeOrderDto);
+    await this.orderService.makeOrder(makeOrderDto, user);
     return 'ok';
   }
 
@@ -34,5 +40,10 @@ export class OrderController {
   @Get(':id')
   async getOrder(@Param() { id }) {
     return await this.orderService.getOrder({ id });
+  }
+
+  @Get()
+  async getAllOrders(@CurrentUser() user: User) {
+    return await this.orderService.getAllUserOrders(user);
   }
 }
