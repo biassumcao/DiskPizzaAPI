@@ -6,6 +6,7 @@ import { GetOrderDto } from './Dto/get-order.dto';
 import { MakeOrderDto } from './Dto/make-order.dto';
 import { Pizza } from 'src/Item/Entity/pizza.entity';
 import { OrderPizzas } from './Entity/order-pizzas.entity';
+import { User } from 'src/User/Entity/user.entity';
 
 @Injectable()
 export class OrderService {
@@ -20,7 +21,7 @@ export class OrderService {
     private readonly orderPizzasRepository: Repository<OrderPizzas>,
   ) {}
 
-  async makeOrder(makeOrderDto: MakeOrderDto) {
+  async makeOrder(makeOrderDto: MakeOrderDto, user: User) {
     const order = new Order(makeOrderDto.address, makeOrderDto.paymentMethod);
     const pizzas: Pizza[] = [];
 
@@ -32,6 +33,7 @@ export class OrderService {
     }
 
     order.pizzas = pizzas;
+    order.userId = user.id;
 
     const savedOrder = await this.orderRepository.save(order);
 
@@ -53,6 +55,15 @@ export class OrderService {
       where: {
         id: getOrderDto.id,
       },
+    });
+  }
+
+  async getAllUserOrders(user: User) {
+    return await this.orderRepository.find({
+      where: {
+        userId: user.id,
+      },
+      relations: { pizzas: true },
     });
   }
 }
