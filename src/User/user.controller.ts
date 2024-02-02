@@ -34,9 +34,4 @@ export class UserController {
   async getUserByEmail(@Param('email') email: string) {
     return await this.userService.findByEmail(email);
   }
-
-  @Post('login')
-  async verifyUser() {
-    return '';
-  }
 }
